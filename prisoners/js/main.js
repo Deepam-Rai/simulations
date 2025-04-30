@@ -1,19 +1,22 @@
 import { Tokens } from "./tokens.js";
 import { drawBar, drawDoughnut } from "./graph.js";
 import { getRandomUniqueIntegers } from "./utils.js";
+import { PLAY } from "./constants.js";
+import { bindRestart, bindPausePlay, bindTimeStep, bindPrisonersCount } from "./binders.js";
 
 Chart.plugins.register(ChartDataLabels);
 
 const meta = {
-    "tokens": null,
+    "tokens": null,     // The boxes from where prisoners pull tokens
     "configs": {
-        "n": 10,
-        "timestep": 50 // ms
+        "n": 10,        // prisoners count
+        "timestep": 50, // ms
+        "state": PLAY
     },
     "stats": {
         "A": {
-            "buckets": [],
-            "allPassCount": 0
+            "buckets": [],      // bucket x value = count of iterations where x prisoners passed
+            "allPassCount": 0   // count of iterations where all prisoners passed
         },
         "B": {
             "buckets": [],
@@ -24,8 +27,22 @@ const meta = {
     "iterations": 0,
 }
 
-meta.stats.A.buckets = Array.from({length: meta.configs.n+1}, (_, i) => 0);
-meta.stats.B.buckets = Array.from({length: meta.configs.n+1}, (_, i) => 0);
+// --------------------- Dashboard keys Binders -----------------------------------
+bindRestart(meta);
+bindPausePlay(meta);
+bindTimeStep(meta);
+bindPrisonersCount(meta);
+// --------------------------------------------------------------------------------
+
+
+
+export function resetField() {
+    meta.stats.A.buckets = Array.from({length: meta.configs.n+1}, (_, i) => 0);
+    meta.stats.B.buckets = Array.from({length: meta.configs.n+1}, (_, i) => 0);
+    meta.stats.A.allPassCount = 0;
+    meta.stats.B.allPassCount = 0;
+    meta.iterations = 0;
+}
 
 function iterate() {
     // new config of token boxes
@@ -69,12 +86,14 @@ function updateUi() {
     drawBar("BPassCountDistribution", meta.stats.B.buckets, "Pass Count per Iteration Distribution")
     const bPass = meta.stats.B.allPassCount / meta.iterations * 100;
     drawDoughnut("BAllPassDistribution", bPass, 100-bPass, "All Pass Distribution");
+    document.getElementById("iteration").textContent = meta.iterations;
 }
 
-function run() {
+export function run() {
     iterate();
     meta.iterations++;
     updateUi();
 }
 
+resetField();
 meta.simulation = setInterval( run, meta.configs.timestep);

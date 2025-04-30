@@ -5,12 +5,21 @@ export function drawBar(canvasName, data, title, barColor = "blue") {
     const ctx = canvasName;
     const xValues = Array.from({ length: data.length }, (_, i) => i);
     const yValues = data;
+    const showLabels = data.length < 27;
+    const labelsConfig = {
+      color: 'white',
+      font: {
+        size: 14
+      },
+    };
 
     if (barChartInstances[canvasName]) {
         let barChartInstance = barChartInstances[canvasName];
         // Update existing chart
         barChartInstance.data.labels = xValues;
         barChartInstance.data.datasets[0].data = yValues;
+        barChartInstance.options.plugins.datalabels = showLabels ? labelsConfig : false;
+
         barChartInstance.update();
     } else {
         // Create chart first time
@@ -38,12 +47,7 @@ export function drawBar(canvasName, data, title, barColor = "blue") {
                 },
                 plugins: {
                     pieLabels: false,
-                    datalabels: {
-                        color: 'white',
-                        font: {
-                          size: 14
-                        },
-                    }
+                    datalabels: showLabels ? labelsConfig : false
                 }
             }
         });

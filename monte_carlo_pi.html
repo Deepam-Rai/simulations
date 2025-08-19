@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        :root{
+            --dashboard-bg-color: #222;
+            --dashboard-text-color: white;
+            --dashboard-btn-color: white;
+            --dashboard-btn-bg-color: #222;
+            --dashboard-input-bg-color: #333;
+            --dashboard-input-color: white;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        html, body {
+            height: 100%;
+            width: 100%;
+        }
+        body {
+            display: flex;
+        }
+        #dashboard {
+            background-color: var(--dashboard-bg-color);
+            width: 400px;
+            height: 100%;
+            display: flex;
+            color: var(--dashboard-text-color);
+            padding: 20px;
+        }
+        #canvas-container {
+            width: 100%;
+            height: 100%;
+        }
+        .canvas-unit {
+            height: 100%;
+            width: 100%;
+            border: 2px solid red;
+        }
+    </style>
+</head>
+<body>
+    <div id="dashboard">
+        <h1>Monte Carlo Pi</h1>
+    </div>
+    <div id="canvas-container">
+        <canvas class="canvas-unit" id="canvas"></canvas>
+    </div>
+    <script>
+        let canvas = document.getElementById("canvas");
+        let ctx = canvas.getContext('2d');
+        let configs = {
+            "timestep": 50,  //ms
+            "diagram": {
+                "center": {
+                    "x": 100,
+                    "y":100
+                },
+                "radius": 100,
+                "pointColor": 'black',
+                "pointRadius": 1,
+                "shapeColor": "red"
+            }
+        };
+        let meta = {
+            "configs": configs,
+            "simulation": null,
+            "stats": {
+                "inPoints": 0,
+                "totalPoints": 0,
+            }
+        }
+        function resetResolution(){
+            const container = document.getElementById("canvas-container");
+            canvas.width = container.clientWidth;
+            canvas.height = container.clientHeight;
+            configs.diagram.center.x = canvas.width/2;
+            configs.diagram.center.y = canvas.height/2;
+            configs.diagram.radius = canvas.width/4;
+        }
+        resetResolution();
+        function drawShapes(){
+            ctx.beginPath();
+            ctx.strokeStyle = configs.diagram.shapeColor;
+            ctx.rect(
+                configs.diagram.center.x - configs.diagram.radius,
+                configs.diagram.center.y - configs.diagram.radius,
+                configs.diagram.radius*2,
+                configs.diagram.radius*2
+            );
+            ctx.stroke();
+            ctx.beginPath();                        
+            ctx.arc(
+                configs.diagram.center.x,
+                configs.diagram.center.y,
+                configs.diagram.radius,
+                0, Math.PI * 2
+            );
+            ctx.stroke();
+            
+        }
+        drawShapes();
+        // since we will be only plotting points now
+        ctx.fillStyle =  configs.diagram.pointColor;
+        ctx.strokeStyle =  configs.diagram.pointColor;
+
+        function generatePoints(){
+            const size = configs.diagram.radius * 2;
+            // x, y in range [center - radius, center - radius + size)  => negligible error due to non-inclusivity
+            const x = configs.diagram.center.x - configs.diagram.radius + Math.random() * size;
+            const y = configs.diagram.center.y - configs.diagram.radius + Math.random() * size;
+            return [x,y];
+        }
+        function plotPoint(x, y){
+            ctx.beginPath();
+            // ctx.arc(
+            //     x, y,
+            //     configs.diagram.pointRadius,
+            //     0, Math.PI * 2
+            // );
+            ctx.rect(  // comparatively efficient than ctx.arc
+                x,y,
+                1, 1
+            );
+            // styles are set before calling this function; avoiding repeated steps;
+            // ctx.fillStyle =  configs.diagram.pointColor;
+            // ctx.strokeStyle =  configs.diagram.pointColor;
+            // ctx.fill();  // uncomment for bigger figures; currently too small to need this;
+            ctx.stroke();
+        }
+        function inCircle(x, y){
+            // tests whether given point lies inside the circle or not
+            const distance =  Math.pow(x -configs.diagram.center.x, 2) +  Math.pow(y - configs.diagram.center.y, 2);
+            return distance <= Math.pow(configs.diagram.radius, 2);
+        }
+        function run(){
+            const [x,y] = generatePoints();
+            plotPoint(x, y);
+            meta.stats.totalPoints += 1;
+            if (inCircle(x, y)){
+                meta.stats.inPoints += 1;
+            }
+            console.log(4 * meta.stats.inPoints/meta.stats.totalPoints);
+        }
+        meta.simulation = setInterval( run, configs.timestep);
+    </script>
+</body>
+</html>

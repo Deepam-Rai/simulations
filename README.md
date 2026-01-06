@@ -14,9 +14,9 @@ It is proved to be a universal Turing Machine.
 > *The director of a prison offers 100 death row prisoners, who are numbered from 1 to 100, a last chance. A room contains a cupboard with 100 drawers. The director randomly puts one prisoner's number in each closed drawer. The prisoners enter the room, one after another. Each prisoner may open and look into 50 drawers in any order. The drawers are closed again afterwards. If, during this search, every prisoner finds their number in one of the drawers, all prisoners are pardoned. If even one prisoner does not find their number, all prisoners die. Before the first prisoner enters the room, the prisoners may discuss strategy — but may not communicate once the first prisoner enters to look in the drawers. What is the prisoners' best strategy?*  
 > ~ Philippe Flajolet and Robert Sedgewick rendition
 
-If every prisoner selects 50 drawers independently and randomly, the probability that single prisoner finds their number is $50\%$. The probability that all the prisoners find their number is $(\frac{1}{2})^{100}$ ~ a really small number.  
+If every prisoner selects 50 drawers independently and randomly, the probability that single prisoner finds their number is $\frac{1}{2}$. The probability that all the prisoners find their number is $(\frac{1}{2})^{100}$ ~ a dystopian number.  
 
-A clever strategy to improve this dytopian probability from $(\frac{1}{2})^{100}$ to greater than $30\%$ is as follows:  
+A clever strategy to improve this dytopian probability from $(\frac{1}{2})^{100}$ to greater than $30\\%$ is as follows:  
 
 1. All drawers are also labelled 1-100.
 2. Each prisoner first opens the drawer labelled with their own number.
@@ -32,9 +32,10 @@ Links:
 # Monte Carlo Pi Estimation
 This showcases Monte Carlo method of Pi estimation.  
 
-**The basic idea**: Consider a circle inscribed in a square, then the ratio of the area of the circle to the area of the square is $\pi$. With this setup we can estimate $\pi$ as follows:  
+**The basic idea**:
 
-1. Inscribe a circle within a square.
+1. Inscribe a circle (with radius $r$) within a square.
 2. Uniformly scatter a given number of points over the square.
 3. Count number of points lying inside the circle.
-4. The ratio of points lying inside the circle to total number of points is an estimate of the ratio of the two areas i.e., $\pi$.
+4. The ratio of points lying inside the circle to total count of scattered points is an estimate of the ratio of the two areas $=\frac{\pi r^2}{(2r)^2} = \frac{\pi}{4}$.
+5. We multiply the obtained ratio by 4 to get estimate of $\pi$.

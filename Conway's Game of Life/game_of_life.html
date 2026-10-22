@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Game of Life</title>
+        <link rel="stylesheet" href="./css/main.css">
+    </head>
+    <body>
+        <div id="dashboard">
+            <h2>Game of Life</h2>
+
+            <p class="playback-controls">
+                <button class="playback-control-btn" id="restart">↻</button>
+                <button class="playback-control-btn" id="pausePlay">▶</button>
+
+            </p>
+
+            <p>
+                Steps: <span id="stepCount">0</span>
+            </p>
+
+            <p>
+                <span class="vertical-control-num">
+                    Rows:
+                    <input type="number" id="rows" min="1" step="1">
+                </span>
+                <span class="vertical-control-num">
+                    Cols:
+                    <input type="number" id="cols" min="1" step="1">
+                </span>
+                <span class="vertical-control-num">
+                    Grid Size:
+                    <input type="number" id="gridSize" min="1" step="1">
+                </span>
+            </p>
+
+            <p>
+                Time Step:
+                <input type="number" id="timeStep" min="1" step="1">
+            </p>
+
+            <p>
+                Rule:
+                <input type="text" id="rule" placeholder="B3/S23">
+            </p>
+
+            <p>
+                Common Patterns:
+                <select id="patternSelect">
+                    <option style="display: none;"> </option>
+                    <!-- filled from script -->
+                </select>
+            </p>
+        
+        </div>
+
+        <div id="canvas-container">
+            <canvas id="drawCanvas"></canvas>
+        </div>
+
+        <script type="module" src="./js/main.js"></script>
+    </body>
+</html>

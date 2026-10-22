@@ -1,0 +1,92 @@
+:root{
+    --dashboard-bg-color: #222;
+    --dashboard-color: white;
+}
+
+/* Reset styles for consistency */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    display: flex;
+    height: 100vh;
+    background-color: #f0f0f0;
+    overflow: hidden;
+}
+
+#dashboard {
+    width: 300px;
+    background: var(--dashboard-bg-color);
+    color: var(--dashboard-color);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 4px 0 10px rgba(0, 0, 0, 0.2);
+    overflow-y: auto;
+}
+
+#dashboard h2 {
+    margin-bottom: 10px;
+}
+
+/* labels and inputs */
+#dashboard p {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    padding: 5px 0;
+}
+
+#dashboard input,
+#dashboard select {
+    flex: 1;
+    padding: 5px;
+    font-size: 14px;
+    background: #333;
+    color: white;
+    border: 1px solid #555;
+    border-radius: 4px;
+    outline: none;
+    margin-left: 10px;
+}
+
+#dashboard .playback-control-btn {
+    font-size: 150%;
+    color: var(--dashboard-color);
+    padding: 5px 10px;
+    background-color: var(--dashboard-bg-color);
+    border-radius: 20%;
+}
+
+#dashboard .vertical-control-num {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+#dashboard .vertical-control-num input {
+    margin-left: 0;
+    max-width: 80px;
+}
+
+#canvas-container {
+    flex: 1;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    overflow: scroll;
+}
+
+canvas {
+    margin: 40px;
+    border: 2px solid black;
+}
